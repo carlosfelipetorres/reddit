@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RappiTest</string>
+    <string name="cancel">Cancelar</string>
+    <string name="accept">Aceptar</string>
+    <string name="cargando">Cargando</string>
+    <string name="username">carlosfelipetorres75</string>
+</resources>
