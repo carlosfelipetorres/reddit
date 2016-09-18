@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.prueba.carlos.rappitext.R;
 import com.prueba.carlos.rappitext.model.RedditApp;
 import com.prueba.carlos.rappitext.model.RedditCategory;
 import com.prueba.carlos.rappitext.services.IRappiTestService;
+import com.prueba.carlos.rappitext.utils.AnimationUtils;
 import com.prueba.carlos.rappitext.utils.ImageManageUtils;
 
 import java.io.File;
@@ -34,6 +36,9 @@ public class AppsAdapter extends RecyclerView.Adapter {
      * Contexto actual
      **/
     private Context mContext;
+
+    /** ultima posicion del item **/
+    private int lastPosition = -1;
 
     /**
      * Inflater
@@ -73,12 +78,12 @@ public class AppsAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         RedditApp app = redditAppsList.get(position);
-        ViewHolder vh = (ViewHolder) holder;
+        final ViewHolder vh = (ViewHolder) holder;
 
         vh.titulo.setText(app.getTitle());
         vh.descripcion.setText(app.getSelftext());
         Uri uri = Uri.parse(app.getThumbnail());
-        ImageManageUtils.displayImage(vh.imagen, uri.toString(), null);
+        ImageManageUtils.displayRoundImage(vh.imagen, uri.toString(), null);
         vh.author.setText("Author: " + app.getAuthor());
         vh.author.setVisibility(View.VISIBLE);
         vh.score.setText("Score: " + app.getScore());
@@ -89,9 +94,24 @@ public class AppsAdapter extends RecyclerView.Adapter {
                 RedditApp rc = redditAppsList.get(position);
                 rappiTestService.saveApp(rc);
                 Intent intent = new Intent(mContext, ResumeAppActivity.class);
-                mContext.startActivity(intent);
+                AnimationUtils.configurarAnimacion(mContext, vh.cv, true, intent);
             }
         });
+        setAnimation(vh.cv, position);
+    }
+
+    /**
+     * Set the animation of the holder o the list
+     *
+     * @param viewToAnimate
+     * @param position
+     */
+    private void setAnimation(View viewToAnimate, int position) {
+        if (position > lastPosition) {
+            Animation animation = android.view.animation.AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
     @Override

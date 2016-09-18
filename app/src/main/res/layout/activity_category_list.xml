@@ -5,22 +5,33 @@
     android:layout_height="match_parent"
     tools:context="com.prueba.carlos.rappitext.controllers.CategoryListActivity">
 
+    <TextView
+    android:id="@+id/nointernet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/material_deep_orange_500"
+    android:textColor="@color/material_red_900"
+    android:gravity="center"
+    android:text="No internet connection"
+    android:visibility="gone"/>
+
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:navigationIcon="@drawable/calendar_prev_arrow">
+        android:layout_height="match_parent">
 
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nointernet">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/reddits_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

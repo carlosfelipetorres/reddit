@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.prueba.carlos.rappitext.controllers.ResumeAppActivity">
 
+    <TextView
+        android:id="@+id/nointernet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_deep_orange_500"
+        android:textColor="@color/material_red_900"
+        android:gravity="center"
+        android:text="No internet connection"
+        android:visibility="gone"/>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nointernet">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -108,16 +119,46 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/url_btn"
+                        <ProgressBar
+                            android:id="@+id/progress_bar"
+                            style="?android:attr/progressBarStyleSmallTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:indeterminate="false"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:visibility="gone"/>
+
+                        <WebView
+                            android:id="@+id/web_view"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="wrap_content"
+                            android:fitsSystemWindows="true"
+                            android:minHeight="100dp" />
+
+
+                        <TextView
+                            android:id="@+id/show_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
                             android:layout_gravity="center_vertical"
-                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:background="?attr/selectableItemBackground"
                             android:clickable="true"
                             android:foreground="?attr/selectableItemBackground"
                             android:gravity="center"
-                            android:text="Click here to see content"
+                            android:text="Click here to see content here"
+                            android:textColor="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/url_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center_vertical"
+                            android:clickable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:background="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:text="Click here to see content in browser"
                             android:textColor="@color/colorPrimary" />
 
                         <ImageView

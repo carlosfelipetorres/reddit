@@ -3,13 +3,18 @@ package com.prueba.carlos.rappitext.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.TextView;
 
 import com.prueba.carlos.rappitext.R;
 import com.prueba.carlos.rappitext.clients.RappiTestApplication;
@@ -25,10 +30,19 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    /** Toolbar **/
+    /**
+     * Toolbar
+     **/
     @BindView(R.id.toolbar)
     @Nullable
     protected Toolbar mToolbar;
+
+    /**
+     * no internet
+     **/
+    @BindView(R.id.nointernet)
+    @Nullable
+    protected TextView mNoInternet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +57,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
         }
+        checkOnline();
     }
 
     /**
      * Injection component. This should be done if there are fields to be injected
      *
-     * @param diComponent
-     *         Dependency injection
+     * @param diComponent Dependency injection
      */
     protected abstract void injectComponent(DiComponent diComponent);
 
@@ -66,14 +80,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      * This method shows a dialog to the user confirming to exit the activity without saving the
      * progress
      *
-     * @param context
-     *         Current context
-     * @param titleRes
-     *         Title to be shown. Could be null
-     * @param msgRes
-     *         Message to be shown. Could be null
-     * @param confirmRes
-     *         Confirmation string for confirmation button. Cannot be null
+     * @param context    Current context
+     * @param titleRes   Title to be shown. Could be null
+     * @param msgRes     Message to be shown. Could be null
+     * @param confirmRes Confirmation string for confirmation button. Cannot be null
      */
     protected void confirmExit(Context context, @StringRes Integer titleRes,
                                @StringRes Integer msgRes, @StringRes int confirmRes) {
@@ -93,6 +103,25 @@ public abstract class BaseActivity extends AppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    /**
+     * Checks internet status
+     *
+     * @return is conected or not
+     */
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    /**
+     * Check online
+     */
+    public void checkOnline() {
+        mNoInternet.setVisibility(!isOnline() ? View.VISIBLE : View.GONE);
     }
 
 }

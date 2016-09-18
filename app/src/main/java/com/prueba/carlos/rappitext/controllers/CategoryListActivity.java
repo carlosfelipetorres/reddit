@@ -93,7 +93,17 @@ public class CategoryListActivity extends BaseActivity implements
 
     @Override
     public void onRefresh() {
+        checkOnline();
         new CargaInicialAsyncTask().execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+        checkOnline();
     }
 
     @Override

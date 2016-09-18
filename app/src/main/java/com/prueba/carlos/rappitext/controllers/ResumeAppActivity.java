@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.prueba.carlos.rappitext.R;
@@ -18,6 +21,7 @@ import com.prueba.carlos.rappitext.clients.DiComponent;
 import com.prueba.carlos.rappitext.model.RedditApp;
 import com.prueba.carlos.rappitext.model.RedditCategory;
 import com.prueba.carlos.rappitext.services.IRappiTestService;
+import com.prueba.carlos.rappitext.utils.AnimationUtils;
 import com.prueba.carlos.rappitext.utils.AppUtils;
 import com.prueba.carlos.rappitext.utils.ImageManageUtils;
 
@@ -75,6 +79,12 @@ public class ResumeAppActivity extends BaseActivity  implements SwipeRefreshLayo
     public TextView urlBtn;
 
     /**
+     * url_btn de la app
+     **/
+    @BindView(R.id.show_content)
+    public TextView showContent;
+
+    /**
      * content de la app
      **/
     @BindView(R.id.content)
@@ -85,6 +95,18 @@ public class ResumeAppActivity extends BaseActivity  implements SwipeRefreshLayo
      **/
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout mRefreshLayout;
+
+    /**
+     * ups de la app
+     **/
+    @BindView(R.id.web_view)
+    public WebView webView;
+
+    /**
+     * progress bar
+     **/
+    @BindView(R.id.progress_bar)
+    public ProgressBar progressBar;
 
     /**
      * Reddit service
@@ -113,7 +135,7 @@ public class ResumeAppActivity extends BaseActivity  implements SwipeRefreshLayo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(appSaved.getUrl()));
-                startActivity(intent);
+                AnimationUtils.configurarAnimacion(ResumeAppActivity.this, urlBtn, true, intent);
             }
         });
 
@@ -124,8 +146,39 @@ public class ResumeAppActivity extends BaseActivity  implements SwipeRefreshLayo
             content.setVisibility(View.GONE);
         }
 
+        webView.setWebViewClient(new MyBrowser());
+        showContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                showContent.setVisibility(View.GONE);
+                webView.getSettings().setLoadsImagesAutomatically(true);
+                webView.getSettings().setJavaScriptEnabled(true);
+                webView.getSettings().setBuiltInZoomControls(true);
+                webView.getProgress();
+                webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+                webView.loadUrl(appSaved.getUrl());
+            }
+        });
+
         AppUtils.initSwipeRefreshLayout(mRefreshLayout);
         mRefreshLayout.setOnRefreshListener(this);
+    }
+
+    private class MyBrowser extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            progressBar.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override
@@ -135,8 +188,16 @@ public class ResumeAppActivity extends BaseActivity  implements SwipeRefreshLayo
 
     @Override
     public void onRefresh() {
+        checkOnline();
         if (mRefreshLayout.isRefreshing()) {
             mRefreshLayout.setRefreshing(false);
         }
+        AnimationUtils.configurarAnimacion(ResumeAppActivity.this, urlBtn, false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onRefresh();
     }
 }

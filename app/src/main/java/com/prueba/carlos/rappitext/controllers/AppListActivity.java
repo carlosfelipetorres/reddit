@@ -102,6 +102,15 @@ public class AppListActivity extends BaseActivity implements
         AppUtils.initSwipeRefreshLayout(mRefreshLayout);
         mRefreshLayout.setOnRefreshListener(this);
 
+        ConfigureView();
+
+        new CargaInicialAsyncTask().execute();
+    }
+
+    /**
+     * Configure the view
+     */
+    private void ConfigureView() {
         RedditCategory categorySaved = rappiTestService.getCategorySaved();
         titulo.setText(categorySaved.getTitle());
         descripcion.setText(categorySaved.getPublicDescription());
@@ -119,8 +128,6 @@ public class AppListActivity extends BaseActivity implements
         } else {
             cv.setCardBackgroundColor(R.color.material_deep_orange_400);
         }
-
-        new CargaInicialAsyncTask().execute();
     }
 
     /**
@@ -140,7 +147,17 @@ public class AppListActivity extends BaseActivity implements
 
     @Override
     public void onRefresh() {
+        checkOnline();
         new CargaInicialAsyncTask().execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
+        checkOnline();
     }
 
     /**

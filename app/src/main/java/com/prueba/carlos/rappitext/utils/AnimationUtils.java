@@ -69,7 +69,6 @@ public final class AnimationUtils {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                view.setVisibility(finalVisibility);
                 context.startActivity(intent);
             }
 
