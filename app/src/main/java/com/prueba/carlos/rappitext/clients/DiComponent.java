@@ -2,8 +2,10 @@ package com.prueba.carlos.rappitext.clients;
 
 import android.content.Context;
 
+import com.prueba.carlos.rappitext.controllers.AppListActivity;
 import com.prueba.carlos.rappitext.controllers.CategoryListActivity;
 import com.prueba.carlos.rappitext.controllers.MainActivity;
+import com.prueba.carlos.rappitext.controllers.ResumeAppActivity;
 import com.prueba.carlos.rappitext.services.ManagersModule;
 import com.prueba.carlos.rappitext.services.ServicesModule;
 
@@ -27,10 +29,16 @@ public interface DiComponent {
      */
     Context context();
 
-    // Clima Activitie
+    // categories Activitie
     void inject(CategoryListActivity activity);
 
     // Main Activity
     void inject(MainActivity activity);
+
+    // App Activity
+    void inject(AppListActivity activity);
+
+    // Resume Activity
+    void inject(ResumeAppActivity activity);
 
 }

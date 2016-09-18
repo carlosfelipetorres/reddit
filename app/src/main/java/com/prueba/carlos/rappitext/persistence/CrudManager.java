@@ -71,6 +71,7 @@ public class CrudManager<Entity, Id> implements ICrudManager<Entity, Id> {
         return created;
     }
 
+
     /**
      * Finds an element of the Entity given its Id
      *
@@ -88,6 +89,26 @@ public class CrudManager<Entity, Id> implements ICrudManager<Entity, Id> {
         }
 
         return entity;
+    }
+
+    /**
+     * Find by field name and attribute
+     *
+     * @param field field name
+     * @param value value
+     * @return List of entities
+     */
+    @Override
+    public List<Entity> findByAttr(String field, Object value) {
+        List<Entity> entities = null;
+
+        try {
+            entities = dao.queryForEq(field, value);
+        } catch (SQLException e) {
+            Log.e(TAG_LOG, "Error ocurrs finding an element of the Entity " + clazz, e);
+        }
+
+        return entities;
     }
 
     /**

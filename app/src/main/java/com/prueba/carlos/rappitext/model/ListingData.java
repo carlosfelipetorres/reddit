@@ -9,20 +9,20 @@ import java.util.List;
  *
  * @author <a href="mailto:carlosfelipetorres75@gmail.com">Carlos Torres</a>
  */
-public class ListingData {
+public class ListingData<T> {
     /** Lista de elementos **/
     @SerializedName("children")
-    private List<RespuestaBasica<RedditCategory>> elementos;
+    private List<RespuestaBasica<T>> elementos;
 
     /** Modhash **/
     @SerializedName("modhash")
     private String modhash;
 
-    public List<RespuestaBasica<RedditCategory>> getElementos() {
-        return (List<RespuestaBasica<RedditCategory>>) elementos;
+    public List<RespuestaBasica<T>> getElementos() {
+        return (List<RespuestaBasica<T>>) elementos;
     }
 
-    public void setElementos(List<RespuestaBasica<RedditCategory>> elementos) {
+    public void setElementos(List<RespuestaBasica<T>> elementos) {
         this.elementos = elementos;
     }
 

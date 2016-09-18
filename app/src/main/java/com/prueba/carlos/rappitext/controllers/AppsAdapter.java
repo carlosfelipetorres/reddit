@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.prueba.carlos.rappitext.R;
+import com.prueba.carlos.rappitext.model.RedditApp;
 import com.prueba.carlos.rappitext.model.RedditCategory;
 import com.prueba.carlos.rappitext.services.IRappiTestService;
 import com.prueba.carlos.rappitext.utils.ImageManageUtils;
@@ -21,12 +22,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 /**
- * Esta clase es utilizada para adaptar las visita de categorias en un Recycler view
+ * Esta clase es utilizada para adaptar las visita de app de reddit en un Recycler view
  *
  * @author <a href="mailto:carlos-torres@accionplus.com">Carlos Torres</a>
  */
-public class CategoriesAdapter extends RecyclerView.Adapter {
+public class AppsAdapter extends RecyclerView.Adapter {
     /**
      * Contexto actual
      **/
@@ -38,27 +41,26 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
     private LayoutInflater mInflater;
 
     /**
+     * Las categorias a ser mostradas
+     **/
+    private List<RedditApp> redditAppsList;
+
+    /**
      * Reddit service
      **/
     @Inject
     IRappiTestService rappiTestService;
 
     /**
-     * Las categorias a ser mostradas
-     **/
-    private List<RedditCategory> redditCategoryList;
-
-    /**
      * Constructor para el adaptador de informes devisitas
      *
-     * @param context          Contexto actual
-     * @param redditCategories Visitas
+     * @param context    Contexto actual
+     * @param redditApps Visitas
      */
-    public CategoriesAdapter(Context context, List<RedditCategory> redditCategories,
-                             IRappiTestService rappiTestService) {
+    public AppsAdapter(Context context, List<RedditApp> redditApps, IRappiTestService rappiTestService) {
         mContext = context;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.redditCategoryList = redditCategories;
+        this.redditAppsList = redditApps;
         this.rappiTestService = rappiTestService;
     }
 
@@ -70,42 +72,40 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        RedditCategory category = redditCategoryList.get(position);
+        RedditApp app = redditAppsList.get(position);
         ViewHolder vh = (ViewHolder) holder;
 
-        vh.titulo.setText(category.getTitle());
-        vh.descripcion.setText(category.getPublicDescription());
-        if ((category.getIconImg().isEmpty() || category.getIconImg() == null) && category.getHeaderImg() != null) {
-            Uri uri = Uri.parse(category.getHeaderImg());
-            ImageManageUtils.displayImage(vh.imagen, uri.toString(), null);
-        } else {
-            Uri uri = Uri.parse(category.getIconImg());
-            ImageManageUtils.displayImage(vh.imagen, uri.toString(), null);
-        }
+        vh.titulo.setText(app.getTitle());
+        vh.descripcion.setText(app.getSelftext());
+        Uri uri = Uri.parse(app.getThumbnail());
+        ImageManageUtils.displayImage(vh.imagen, uri.toString(), null);
+        vh.author.setText("Author: " + app.getAuthor());
+        vh.author.setVisibility(View.VISIBLE);
+        vh.score.setText("Score: " + app.getScore());
+        vh.score.setVisibility(View.VISIBLE);
         vh.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RedditCategory rc = redditCategoryList.get(position);
-                rappiTestService.saveCategory(rc);
-                Intent intent = new Intent(mContext, AppListActivity.class);
+                RedditApp rc = redditAppsList.get(position);
+                rappiTestService.saveApp(rc);
+                Intent intent = new Intent(mContext, ResumeAppActivity.class);
                 mContext.startActivity(intent);
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
-        return redditCategoryList.size();
+        return redditAppsList.size();
     }
 
     /**
      * Set reddit list
      *
-     * @param redditCategory
+     * @param redditApps
      */
-    public void setRedditCategoryList(List<RedditCategory> redditCategory) {
-        this.redditCategoryList = redditCategory;
+    public void setRedditAppsList(List<RedditApp> redditApps) {
+        this.redditAppsList = redditApps;
     }
 
     /**
@@ -126,6 +126,15 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
          **/
         public ImageView imagen;
         /**
+         * autor de la app
+         **/
+        public TextView author;
+        /**
+         * score de la app
+         **/
+        public TextView score;
+
+        /**
          * card view
          **/
         public CardView cv;
@@ -135,8 +144,11 @@ public class CategoriesAdapter extends RecyclerView.Adapter {
             titulo = (TextView) itemView.findViewById(R.id.title);
             descripcion = (TextView) itemView.findViewById(R.id.description);
             imagen = (ImageView) itemView.findViewById(R.id.photo);
+            author = (TextView) itemView.findViewById(R.id.author);
+            score = (TextView) itemView.findViewById(R.id.score);
             cv = (CardView) itemView.findViewById(R.id.cv);
         }
     }
 }
+
 

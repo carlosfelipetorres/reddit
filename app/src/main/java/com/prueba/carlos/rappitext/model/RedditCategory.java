@@ -19,51 +19,51 @@ public class RedditCategory {
     private String id;
 
     @SerializedName("banner_img")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String bannerImg;
 
     @SerializedName("submit_text")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String submitText;
 
     @SerializedName("display_name")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String displayName;
 
     @SerializedName("header_img")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String headerImg;
 
     @SerializedName("title")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String title;
 
     @SerializedName("icon_img")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String iconImg;
 
     @SerializedName("header_title")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String headerTitle;
 
     @SerializedName("description")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String description;
 
     @SerializedName("subscribers")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String subscribers;
 
     @SerializedName("key_color")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String keyColor;
 
     @SerializedName("url")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String url;
 
     @SerializedName("public_description")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String publicDescription;
 
     public Integer getIdLocal() {

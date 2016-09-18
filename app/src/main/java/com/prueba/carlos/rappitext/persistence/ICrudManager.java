@@ -33,6 +33,15 @@ public interface ICrudManager<Entity, Id> {
     Entity findById(Id id);
 
     /**
+     * Find by field name and attribute
+     *
+     * @param field field name
+     * @param value value
+     * @return List of entities
+     */
+    List<Entity> findByAttr(String field, Object value);
+
+    /**
      * Returns a list of all stored elements of the Entity in the DB
      *
      * @return List of all stored elements of the Entity in the DB

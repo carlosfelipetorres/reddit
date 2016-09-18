@@ -2,6 +2,7 @@ package com.prueba.carlos.rappitext.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author <a href="mailto:carlosfelipetorres75@gmail.com">Carlos Torres</a>
  */
-public class Imagenes {
+public class Imagenes implements Serializable {
 
     @SerializedName("images")
     private List<ContenidoImagenes> images;
@@ -21,14 +22,15 @@ public class Imagenes {
     public void setImages(List<ContenidoImagenes> images) {
         this.images = images;
     }
+
+    public String getUrlImageSource (){
+        return images.get(0).getSource().getUrl();
+    }
 }
 
-class ContenidoImagenes {
+class ContenidoImagenes implements Serializable {
     @SerializedName("source")
     private Content source;
-
-    @SerializedName("resolutions")
-    private Content resolutions;
 
     public Content getSource() {
         return source;
@@ -37,17 +39,9 @@ class ContenidoImagenes {
     public void setSource(Content source) {
         this.source = source;
     }
-
-    public Content getResolutions() {
-        return resolutions;
-    }
-
-    public void setResolutions(Content resolutions) {
-        this.resolutions = resolutions;
-    }
 }
 
-class Content {
+class Content implements Serializable {
 
     @SerializedName("url")
     private String url;

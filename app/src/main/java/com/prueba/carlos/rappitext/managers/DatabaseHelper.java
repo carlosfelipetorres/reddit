@@ -31,10 +31,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String TAG_LOG = DatabaseHelper.class.getName();
 
     /** DB name **/
-    private static final String DB_NAME = "dbd_control.db";
+    private static final String DB_NAME = "reddittest.db";
 
     /** DB Version **/
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 7;
 
     /** The connection source **/
     protected AndroidConnectionSource connectionSource = new AndroidConnectionSource(this);

@@ -2,6 +2,7 @@ package com.prueba.carlos.rappitext.services;
 
 import android.content.Context;
 
+import com.prueba.carlos.rappitext.managers.IAppsManager;
 import com.prueba.carlos.rappitext.managers.ICategoriesManager;
 
 import javax.inject.Singleton;
@@ -36,8 +37,10 @@ public class ServicesModule {
      */
     @Provides
     @Singleton
-    public IRappiTestService RappiTestService(Context mContext, ICategoriesManager categoriesManager) {
-        return new RappiTestService(mContext, categoriesManager);
+    public IRappiTestService RappiTestService(Context mContext,
+                                              ICategoriesManager categoriesManager,
+                                              IAppsManager appsManager) {
+        return new RappiTestService(mContext, categoriesManager, appsManager);
     }
 
     /**

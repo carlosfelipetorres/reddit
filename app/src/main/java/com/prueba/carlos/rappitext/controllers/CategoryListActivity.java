@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.prueba.carlos.rappitext.R;
@@ -15,6 +16,7 @@ import com.prueba.carlos.rappitext.model.RedditCategory;
 import com.prueba.carlos.rappitext.model.TipoNotificacion;
 import com.prueba.carlos.rappitext.services.IRappiTestService;
 import com.prueba.carlos.rappitext.utils.AppUtils;
+import com.prueba.carlos.rappitext.utils.ItemClickSupport;
 
 import java.util.List;
 
@@ -23,11 +25,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * Actividad que maneja la pantalla inicial del clima
+ * Actividad que maneja la pantalla inicial de la lista de categorias
  *
  * @author <a href="mailto:carlosfelipetorres75@gmail.com">Carlos Torres</a>
  */
-public class CategoryListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class CategoryListActivity extends BaseActivity implements
+        SwipeRefreshLayout.OnRefreshListener, ItemClickSupport.OnItemClickListener {
 
     /**
      * Reddits categories
@@ -67,14 +70,10 @@ public class CategoryListActivity extends BaseActivity implements SwipeRefreshLa
         }
 
         AppUtils.initSwipeRefreshLayout(mRefreshLayout);
+        ItemClickSupport.addTo(redditsRv).setOnItemClickListener(this);
         mRefreshLayout.setOnRefreshListener(this);
 
         new CargaInicialAsyncTask().execute();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -96,6 +95,15 @@ public class CategoryListActivity extends BaseActivity implements SwipeRefreshLa
     public void onRefresh() {
         new CargaInicialAsyncTask().execute();
     }
+
+    @Override
+    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+        RedditCategory rc = redditCategories.get(position);
+        rappiTestService.saveCategory(rc);
+        Intent intent = new Intent(getActivity(), AppListActivity.class);
+        startActivity(intent);
+    }
+
 
     /**
      * Esta clase realiza la carga inicial de manera asíncrona
@@ -128,7 +136,7 @@ public class CategoryListActivity extends BaseActivity implements SwipeRefreshLa
                 super.onPostExecute(aVoid);
                 return;
             }
-            mAdapter = new CategoriesAdapter(CategoryListActivity.this, redditCategories);
+            mAdapter = new CategoriesAdapter(CategoryListActivity.this, redditCategories, rappiTestService);
             redditsRv.setAdapter(mAdapter);
 
             if (mRefreshLayout.isRefreshing()) {

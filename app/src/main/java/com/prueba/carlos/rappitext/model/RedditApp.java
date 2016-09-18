@@ -1,6 +1,7 @@
 package com.prueba.carlos.rappitext.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 
 /**
@@ -14,44 +15,64 @@ public class RedditApp {
     @DatabaseField(generatedId = true)
     private Integer idLocal;
 
+    @DatabaseField(canBeNull = false)
+    private String idCategory;
+
     @SerializedName("id")
     @DatabaseField(canBeNull = false)
     private String id;
 
     @SerializedName("subreddit")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String subreddit;
 
     @SerializedName("selftext")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String selftext;
 
     @SerializedName("likes")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(columnName = "likes")
     private String likes;
 
     @SerializedName("author")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String author;
 
     @SerializedName("score")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String score;
 
     @SerializedName("url")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String url;
 
     @SerializedName("title")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String title;
 
-    @SerializedName("preview")
-    private Imagenes preview;
-
     @SerializedName("thumbnail")
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(canBeNull = true)
     private String thumbnail;
+
+    @SerializedName("num_comments")
+    @DatabaseField(canBeNull = true)
+    private String numComments;
+
+    @SerializedName("ups")
+    @DatabaseField(canBeNull = true)
+    private String ups;
+
+    @SerializedName("preview")
+    @DatabaseField(dataType= DataType.SERIALIZABLE, canBeNull = true)
+    private Imagenes imagenes;
+
+    public String getIdCategory() {
+        return idCategory;
+    }
+
+    public void setIdCategory(String idCategory) {
+        this.idCategory = idCategory;
+    }
 
     public Integer getIdLocal() {
         return idLocal;
@@ -125,19 +146,35 @@ public class RedditApp {
         this.title = title;
     }
 
-    public Imagenes getPreview() {
-        return preview;
-    }
-
-    public void setPreview(Imagenes preview) {
-        this.preview = preview;
-    }
-
     public String getThumbnail() {
         return thumbnail;
     }
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getNumComments() {
+        return numComments;
+    }
+
+    public void setNumComments(String numComments) {
+        this.numComments = numComments;
+    }
+
+    public String getUps() {
+        return ups;
+    }
+
+    public void setUps(String ups) {
+        this.ups = ups;
+    }
+
+    public Imagenes getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(Imagenes imagenes) {
+        this.imagenes = imagenes;
     }
 }

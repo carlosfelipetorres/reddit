@@ -3,8 +3,10 @@ package com.prueba.carlos.rappitext.services;
 import android.content.Context;
 import android.util.Log;
 
+import com.prueba.carlos.rappitext.managers.AppsManager;
 import com.prueba.carlos.rappitext.managers.CategoriesManager;
 import com.prueba.carlos.rappitext.managers.DatabaseHelper;
+import com.prueba.carlos.rappitext.managers.IAppsManager;
 import com.prueba.carlos.rappitext.managers.ICategoriesManager;
 
 import java.sql.SQLException;
@@ -64,6 +66,25 @@ public class ManagersModule {
             return new CategoriesManager(helper);
         } catch (SQLException e) {
             Log.e(TAG, "An error occurred while creating the instance of the Categories Manager", e);
+        }
+        return null;
+    }
+
+    /**
+     * Bind of the {@link ICategoriesManager} with its implementation
+     *
+     * @param helper
+     *         DB Helper
+     *
+     * @return Implementation of the Alarms Manager
+     */
+    @Provides
+    @Singleton
+    public IAppsManager appsManager(DatabaseHelper helper) {
+        try {
+            return new AppsManager(helper);
+        } catch (SQLException e) {
+            Log.e(TAG, "An error occurred while creating the instance of the Apps Manager", e);
         }
         return null;
     }

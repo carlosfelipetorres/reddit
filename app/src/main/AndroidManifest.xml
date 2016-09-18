@@ -18,7 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.CategoryListActivity"/>
+        <activity android:name=".controllers.CategoryListActivity" />
+        <activity android:name=".controllers.AppListActivity" />
+        <activity android:name=".controllers.ResumeAppActivity"></activity>
     </application>
 
 </manifest>
